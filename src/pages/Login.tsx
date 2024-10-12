@@ -5,11 +5,9 @@ const Login: React.FC = () => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(''); // 초기화
 
         try {
             const response = await axios.post('http://localhost:8080/login', {
@@ -19,13 +17,16 @@ const Login: React.FC = () => {
                 withCredentials: true, // 쿠키를 포함하도록 설정
             });
 
-            alert(response.data); // 로그인 성공 메시지
+            if (response.status === 200) {
+                // 로그인 성공 시 성공 페이지로 이동
+                alert('success');
+            }
             // 로그인 성공 후 추가 로직 (예: 리다이렉트, 상태 업데이트 등)
         } catch (err: any) {
             if (err.response) {
-                setError(err.response.data); // 에러 메시지 표시
+                alert(err.response.data.message); // 에러 메시지 표시
             } else {
-                setError('An error occurred.'); // 일반 에러 메시지
+                alert('An error occurred.'); // 일반 에러 메시지
             }
         }
     };
