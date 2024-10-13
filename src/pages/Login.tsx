@@ -1,10 +1,13 @@
 import React, {useState} from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Login: React.FC = () => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,7 +22,9 @@ const Login: React.FC = () => {
 
             if (response.status === 200) {
                 // 로그인 성공 시 성공 페이지로 이동
-                alert('success');
+                const token: string = response.data.token;
+                sessionStorage.setItem('token', token);
+                navigate("/");
             }
             // 로그인 성공 후 추가 로직 (예: 리다이렉트, 상태 업데이트 등)
         } catch (err: any) {
@@ -33,7 +38,6 @@ const Login: React.FC = () => {
 
     const handleGoogleLogin = () => {
         console.log('Google OAuth login initiated');
-        // In a real application, this would redirect to Google's OAuth page
         alert('Google OAuth login initiated');
     };
 
